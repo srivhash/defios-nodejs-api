@@ -51,7 +51,7 @@ export const repositoryCreated = async (res: IRepositoryCreated) => {
             num_contributions_chg_perc: 0,
             num_open_issues: 0,
             community_health: 0,
-            project_repo_link: "",
+            project_repo_link: res.uri,
             project_token: token._id,
             project_owner_github: user.user_github,
             claimers_pending: res.ghUsernames
