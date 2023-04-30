@@ -1,6 +1,6 @@
 import axios from "axios";
 import { IIssueCreated } from "../events";
-import { Issue } from "../models/issues";
+import { Issues } from "../models/issues";
 import { Project } from "../models/project";
 import { Token } from "../models/token";
 import { User } from "../models/users";
@@ -34,7 +34,7 @@ export const issueCreated = async (res: IIssueCreated) => {
         };
 
         axios(config).then((data) => {
-            const issue = new Issue({
+            const issue = new Issues({
                 issue_account: res.issueAccount.toString(),
                 issue_author: res.issueCreator.toString(),
                 issue_title: data.data.title,

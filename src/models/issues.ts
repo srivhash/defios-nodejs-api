@@ -90,4 +90,4 @@ export const IssueSchema = new mongoose.Schema<IIssue>({
     }
 }, { versionKey: false });
 
-export const Issue = mongoose.model("Issues", IssueSchema);
+export const Issues = mongoose.model("Issues", IssueSchema);

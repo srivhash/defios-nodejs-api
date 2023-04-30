@@ -1,9 +1,9 @@
 import { ICommitAdded } from "../events";
-import { IIssuePRs, Issue, IIssue } from "../models/issues"
+import { IIssuePRs, Issues, IIssue } from "../models/issues"
 
 export const commitCreated = async (commit: ICommitAdded) => {
     return new Promise(async (resolve, reject) => {
-        const issue = await Issue.findOne({ issue_account: commit.issueAccount.toString() })
+        const issue = await Issues.findOne({ issue_account: commit.issueAccount.toString() })
         issue.issue_state = 'winner_declared'
         if (issue) {
             issue.issue_prs.push({

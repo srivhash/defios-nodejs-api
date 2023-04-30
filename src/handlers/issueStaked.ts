@@ -1,5 +1,5 @@
 import { IIssueStaked } from "../events";
-import { Issue } from "../models/issues";
+import { Issues } from "../models/issues";
 import { Project } from "../models/project";
 import { Contribution, User } from "../models/users";
 
@@ -11,7 +11,7 @@ export const issueStaked = async (res: IIssueStaked) => {
             reject("User not found");
             return
         }
-        const issue = await Issue.findOne({ issue_account: res.issueAccount.toString() })
+        const issue = await Issues.findOne({ issue_account: res.issueAccount.toString() })
         if (!issue) {
             reject("issue not found");
             return
