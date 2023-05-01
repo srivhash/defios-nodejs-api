@@ -1,9 +1,11 @@
-import { ICommitAdded } from "../events";
-import { IIssuePRs, Issues, IIssue } from "../models/issues"
+import { ICommitAdded } from '../events'
+import { IIssuePRs, Issues, IIssue } from '../models/issues'
 
 export const commitCreated = async (commit: ICommitAdded) => {
     return new Promise(async (resolve, reject) => {
-        const issue = await Issues.findOne({ issue_account: commit.issueAccount.toString() })
+        const issue = await Issues.findOne({
+            issue_account: commit.issueAccount.toString(),
+        })
         issue.issue_state = 'winner_declared'
         if (issue) {
             issue.issue_prs.push({
@@ -11,15 +13,15 @@ export const commitCreated = async (commit: ICommitAdded) => {
                 issue_pr_author: commit.commitAccount.toString(),
                 issue_pr_link: commit.metadataUri,
                 issue_originality_score: 0,
-                issue_author_github: "",
-                issue_title: "",
+                issue_author_github: '',
+                issue_title: '',
                 issue_vote_amount: 0,
-            });
+            })
             issue.save((err, issue) => {
                 if (err) {
-                    reject(err);
+                    reject(err)
                 }
-                resolve(issue);
+                resolve(issue)
             })
         }
     })

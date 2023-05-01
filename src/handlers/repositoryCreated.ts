@@ -1,9 +1,9 @@
-import { IRepositoryCreated } from "../events";
-import { Project } from "../models/project";
-import { Token } from "../models/token";
-import { User } from "../models/users";
-import axios from "axios";
-import { addUserClaimAccount } from "../..";
+import { IRepositoryCreated } from '../events'
+import { Project } from '../models/project'
+import { Token } from '../models/token'
+import { User } from '../models/users'
+import axios from 'axios'
+import { addUserClaimAccount } from '../..'
 
 export const repositoryCreated = async (res: IRepositoryCreated) => {
     return new Promise(async (resolve, reject) => {
@@ -22,12 +22,16 @@ export const repositoryCreated = async (res: IRepositoryCreated) => {
         // }, 60000)
         res.ghUsernames.forEach((username, i) => {
             try {
-                console.log('Adding user claim', username, res.claimAmounts[i]);
-                addUserClaimAccount(username, res.repositoryAccount, res.claimAmounts[i]);
+                console.log('Adding user claim', username, res.claimAmounts[i])
+                addUserClaimAccount(
+                    username,
+                    res.repositoryAccount,
+                    res.claimAmounts[i]
+                )
             } catch (e) {
-                console.log(e);
+                console.log(e)
             }
-        });
+        })
         const token = new Token({
             token_spl_addr: tokenAddress.toBase58(),
             token_symbol: res.tokenSymbol,
@@ -36,12 +40,14 @@ export const repositoryCreated = async (res: IRepositoryCreated) => {
         })
         token.save((err: any, token: any) => {
             if (err) {
-                reject(err);
+                reject(err)
             }
         })
-        const user = await User.findOne({ user_phantom_address: res.repositoryCreator.toString() })
+        const user = await User.findOne({
+            user_phantom_address: res.repositoryCreator.toString(),
+        })
         if (!user) {
-            reject("User not found");
+            reject('User not found')
             return
         }
         const project = new Project({
@@ -54,13 +60,13 @@ export const repositoryCreated = async (res: IRepositoryCreated) => {
             project_repo_link: res.uri,
             project_token: token._id,
             project_owner_github: user.user_github,
-            claimers_pending: res.ghUsernames
+            claimers_pending: res.ghUsernames,
         })
         project.save((err: any, project: unknown) => {
             if (err) {
-                reject(err);
+                reject(err)
             }
-            resolve(project);
+            resolve(project)
         })
     })
 }
