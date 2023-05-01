@@ -1,6 +1,5 @@
 import * as express from 'express';
 import { Express, Request, Response } from 'express'
-import * as dotenv from 'dotenv';
 import * as ed from '@noble/ed25519';
 import * as anchor from '@project-serum/anchor';
 import { Program } from '@project-serum/anchor'
@@ -13,7 +12,7 @@ import { connectToDatabase } from './src/database';
 
 let fetch = require('node-fetch');
 
-dotenv.config();
+require('dotenv').config({ path: require('find-config')('.env') })
 
 const app: Express = express();
 const port = process.env.PORT;
