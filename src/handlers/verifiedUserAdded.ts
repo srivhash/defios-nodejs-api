@@ -1,5 +1,5 @@
-import { IVerifiedUserAdded } from "../events";
-import { User } from "../models/users"
+import { IVerifiedUserAdded } from '../events'
+import { User } from '../models/users'
 
 export const addVerifiedUser = async (user: IVerifiedUserAdded) => {
     return new Promise((resolve, reject) => {
@@ -9,9 +9,9 @@ export const addVerifiedUser = async (user: IVerifiedUserAdded) => {
         })
         newUser.save((err, user) => {
             if (err) {
-                reject(err);
+                reject(err)
             }
-            resolve(user);
-        });
+            resolve(user)
+        })
     })
 }
