@@ -9,10 +9,12 @@ import { addEventListener } from './src/listeners'
 import * as bs58 from 'bs58'
 import { PublicKey } from '@solana/web3.js'
 import { connectToDatabase } from './src/database'
+import { fetch } from 'node-fetch'
+import dotenv from 'dotenv';
+import findConfig from 'find-config';
 
-let fetch = require('node-fetch')
+dotenv.config({ path: findConfig('.env') });
 
-require('dotenv').config({ path: require('find-config')('.env') })
 
 const app: Express = express()
 const port = process.env.PORT
