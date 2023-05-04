@@ -32,7 +32,7 @@
         "fs": "^0.0.1-security",
         "fs-promise": "^2.0.3",
         "mongodb": "^5.1.0",
-        "mongoose": "^6.10.0",
+        "mongoose": "^7.1.0",
         "node-fetch": "^3.3.1",
         "supercluster": "^7.1.5",
         "ts-node": "^10.9.1",
