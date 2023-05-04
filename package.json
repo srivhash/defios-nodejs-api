@@ -39,7 +39,7 @@
         "webpack-node-externals": "^3.0.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.21.0",
+        "@babel/core": "^7.21.8",
         "@babel/preset-env": "^7.20.2",
         "@babel/preset-typescript": "^7.21.0",
         "@types/cors": "^2.8.13",
