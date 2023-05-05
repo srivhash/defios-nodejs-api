@@ -134,3 +134,6 @@ dist
 
 #ignore solana wallet
 /my-solana-wallet
+
+#ignore config file
+/config
