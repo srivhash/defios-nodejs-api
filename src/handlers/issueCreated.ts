@@ -4,9 +4,11 @@ import { Issues } from '../models/issues'
 import { Project } from '../models/project'
 import { Token } from '../models/token'
 import { User } from '../models/users'
+const config = require('config');
 
 const token = process.env.GH_TOKEN as string
-
+const github_token = config.github.api_key
+console.log(github_token)
 export const issueCreated = async (res: IIssueCreated) => {
     return new Promise(async (resolve, reject) => {
         const user = await User.findOne({
@@ -37,7 +39,7 @@ export const issueCreated = async (res: IIssueCreated) => {
                 'https://api.github.com/repos/'
             ),
             headers: {
-                Authorization: `token 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`,
+                Authorization: 'token '+github_token,
                 'Content-Type': 'application/json',
             },
         }
