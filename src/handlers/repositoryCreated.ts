@@ -32,41 +32,36 @@ export const repositoryCreated = async (res: IRepositoryCreated) => {
                 console.log(e)
             }
         })
-        const token = new Token({
-            token_spl_addr: tokenAddress.toBase58(),
-            token_symbol: res.tokenSymbol,
-            token_name: res.tokenName,
-            token_image_url: res.tokenUri,
-        })
-        token.save((err: any, token: any) => {
-            if (err) {
-                reject(err)
+        try {
+            const token = new Token({
+                token_spl_addr: tokenAddress.toBase58(),
+                token_symbol: res.tokenSymbol,
+                token_name: res.tokenName,
+                token_image_url: res.tokenUri,
+            })
+            token.save()
+            const user = await User.findOne({
+                user_phantom_address: res.repositoryCreator.toString(),
+            })
+            if (!user) {
+                reject('User not found')
+                return
             }
-        })
-        const user = await User.findOne({
-            user_phantom_address: res.repositoryCreator.toString(),
-        })
-        if (!user) {
-            reject('User not found')
-            return
+            const project = new Project({
+                project_account: res.repositoryAccount.toString(),
+                project_name: res.name,
+                num_contributions: 0,
+                num_contributions_chg_perc: 0,
+                num_open_issues: 0,
+                community_health: 0,
+                project_repo_link: res.uri,
+                project_token: token._id,
+                project_owner_github: user.user_github,
+                claimers_pending: res.ghUsernames,
+            })
+            project.save()
+        } catch (err) {
+            reject(err)
         }
-        const project = new Project({
-            project_account: res.repositoryAccount.toString(),
-            project_name: res.name,
-            num_contributions: 0,
-            num_contributions_chg_perc: 0,
-            num_open_issues: 0,
-            community_health: 0,
-            project_repo_link: res.uri,
-            project_token: token._id,
-            project_owner_github: user.user_github,
-            claimers_pending: res.ghUsernames,
-        })
-        project.save((err: any, project: unknown) => {
-            if (err) {
-                reject(err)
-            }
-            resolve(project)
-        })
     })
 }
