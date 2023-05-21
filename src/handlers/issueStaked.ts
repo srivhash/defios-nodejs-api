@@ -19,24 +19,25 @@ export const issueStaked = async (res: IIssueStaked) => {
             reject('issue not found')
             return
         }
-        try {
-            issue.issue_stake_amount =
-                parseInt(res.stakedAmount.toString()) +
-                parseInt(issue.issue_stake_amount.toString())
-            issue.save()
-            const contribution = new Contribution({
-                contributor_github: user.user_github,
-                contribution_link: '', // TODO: Add link to contribution
-                contribution_timestamp: new Date(),
-                contribution_amt: res.stakedAmount,
-                contribution_token_symbol: issue.issue_stake_token_symbol,
-                contribution_token_url: issue.issue_stake_token_url,
-                contribution_type: 'inbound',
-            })
-            user.user_contributions.push(contribution)
-            user.save()
-        } catch (err) {
-            reject(err)
-        }
+        issue.issue_stake_amount =
+            parseInt(res.stakedAmount.toString()) +
+            parseInt(issue.issue_stake_amount.toString())
+        issue.save()
+        const contribution = new Contribution({
+            contributor_github: user.user_github,
+            contribution_link: '', // TODO: Add link to contribution
+            contribution_timestamp: new Date(),
+            contribution_amt: res.stakedAmount,
+            contribution_token_symbol: issue.issue_stake_token_symbol,
+            contribution_token_url: issue.issue_stake_token_url,
+            contribution_type: 'inbound',
+        })
+        user.user_contributions.push(contribution)
+        user.save((err, user) => {
+            if (err) {
+                reject(err)
+            }
+            resolve(user)
+        })
     })
 }

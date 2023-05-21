@@ -1,17 +1,17 @@
-import { ICommitAdded } from '../events'
+import { IAddObjectiveData } from '../events'
 import { IIssuePRs, Issues, IIssue } from '../models/issues'
 
-export const commitCreated = async (commit: ICommitAdded) => {
+export const addObjectiveData = async (data: IAddObjectiveData) => {
     return new Promise(async (resolve, reject) => {
         const issue = await Issues.findOne({
-            issue_account: commit.issueAccount.toString(),
+            issue_account: data.objective_issue.toString(),
         })
         issue.issue_state = 'winner_declared'
         if (issue) {
             issue.issue_prs.push({
-                issue_pr_account: commit.commitCreator.toString(),
-                issue_pr_author: commit.commitAccount.toString(),
-                issue_pr_link: commit.metadataUri,
+                issue_pr_account: data.objective_public_key.toString(),
+                issue_pr_author: data.objective_issue.toString(),
+                issue_pr_link: data.metadataUri,
                 issue_originality_score: 0,
                 issue_author_github: '',
                 issue_title: '',
