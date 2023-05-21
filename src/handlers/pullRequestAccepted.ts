@@ -1,17 +1,17 @@
-import { ICommitAdded } from '../events'
+import { IPullRequestAccepted } from '../events'
 import { IIssuePRs, Issues, IIssue } from '../models/issues'
 
-export const commitCreated = async (commit: ICommitAdded) => {
+export const pullRequestAccepted = async (commit: IPullRequestAccepted) => {
     return new Promise(async (resolve, reject) => {
         const issue = await Issues.findOne({
-            issue_account: commit.issueAccount.toString(),
+            issue_account: commit.issue.toString(),
         })
         issue.issue_state = 'winner_declared'
         if (issue) {
             issue.issue_prs.push({
-                issue_pr_account: commit.commitCreator.toString(),
-                issue_pr_author: commit.commitAccount.toString(),
-                issue_pr_link: commit.metadataUri,
+                issue_pr_account: commit.pull_request_addr.toString(),
+                issue_pr_author: commit.pull_request_addr.toString(),
+                issue_pr_link: commit.repository,
                 issue_originality_score: 0,
                 issue_author_github: '',
                 issue_title: '',

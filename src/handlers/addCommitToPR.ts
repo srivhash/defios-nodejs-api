@@ -1,7 +1,7 @@
-import { ICommitAdded } from '../events'
+import { IAddCommitToPR } from '../events'
 import { IIssuePRs, Issues, IIssue } from '../models/issues'
 
-export const commitCreated = async (commit: ICommitAdded) => {
+export const addCommitToPR = async (commit: IAddCommitToPR) => {
     return new Promise(async (resolve, reject) => {
         const issue = await Issues.findOne({
             issue_account: commit.issueAccount.toString(),
