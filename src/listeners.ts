@@ -1,24 +1,27 @@
 import * as anchor from '@project-serum/anchor'
 import { Defios } from './defios'
 import {
+    INameRouterCreated,
+    IVerifiedUserAdded,
     ICommitAdded,
     IIssueCreated,
-    IIssueStaked,
-    INameRouterCreated,
     IRepositoryCreated,
-    ITokensClaimed,
-    IVerifiedUserAdded,
-    IIssueUnstaked,
+    IIssueStaked,
+    ITokensClaimed, 
 } from './events'
 
 import{
-    IAddObjectiveData,
-    IAddRoadmapData,
-    IAddChildObjective,
     IPullRequestSent,
     IAddCommitToPR,
+    IAddChildObjective,
+    IAddObjectiveDataEvent,
+    IAddRoadmapDataEvent,
+    IIssueUnstaked,
     IPullRequestAccepted,
-    IVestingScheduleChanged
+    IVestingScheduleChanged,
+    IDefaultVestingScheduleChanged,
+    IPullRequestStaked,
+    IPullRequestUnstaked
 } from './events'
 
 import { commitCreated } from './handlers/commitCreated'
@@ -36,7 +39,10 @@ import {addCommitToPR}      from './handlers/addCommitToPR'
 import {pullRequestSent}    from './handlers/pullRequestSent'
 import {pullRequestAccepted} from './handlers/pullRequestAccepted'
 import {vestingScheduleChanged} from './handlers/vestingScheduleChanged' //done
-// import {issueUnstaked} from './handlers2/issueUnstaked'
+import {defaultVestingScheduleChanged} from './handlers/defaultVestingScheduleChanged' 
+import {pullRequestStaked} from './handlers/pullRequestStaked'
+import {pullRequestUnstaked} from './handlers/pullRequestUnstaked'
+
 
 export const addEventListener = (program: anchor.Program<Defios>) => {
     program.addEventListener('NameRouterCreated', (res: INameRouterCreated) => {
@@ -94,7 +100,7 @@ export const addEventListener = (program: anchor.Program<Defios>) => {
             })
     })
 
-    program.addEventListener('IssueUnstaked', (res: IIssueStaked) => {
+    program.addEventListener('IssueUnstaked', (res: IIssueUnstaked) => {
         issueUnstaked(res)
             .then(() => {
                 console.log('IssueUnstaked')
@@ -115,7 +121,7 @@ export const addEventListener = (program: anchor.Program<Defios>) => {
     })
 
     //New Listeners 
-    program.addEventListener('ObjectiveDataAdded', (res: IAddObjectiveData) => {
+    program.addEventListener('ObjectiveDataAdded', (res: IAddObjectiveDataEvent) => {
         addObjectiveData(res)
             .then(() => {
                 console.log('ObjectiveDataAdded')
@@ -126,7 +132,7 @@ export const addEventListener = (program: anchor.Program<Defios>) => {
     })
     
 
-    program.addEventListener('RoadmapDataAdded', (res: IAddRoadmapData) => {
+    program.addEventListener('RoadmapDataAdded', (res: IAddRoadmapDataEvent) => {
         addRoadmapData(res)
             .then(() => {
                 console.log('RoadmapDataAdded')
@@ -185,6 +191,39 @@ export const addEventListener = (program: anchor.Program<Defios>) => {
             })
             .catch((e) => {
                 console.log('Error Changing Vesting Schedule: ', e)
+            })
+
+    })
+
+    program.addEventListener('DefaultVestingScheduleChanged', (res: IDefaultVestingScheduleChanged) => {
+        defaultVestingScheduleChanged(res)
+            .then(() => {
+                console.log('DefaultVestingScheduleChanged')
+            })
+            .catch((e) => {
+                console.log('Error Changing Default Vesting Schedule: ', e)
+            })
+
+    })
+
+    program.addEventListener('PullRequestStaked', (res: IPullRequestStaked) => {
+        pullRequestStaked(res)
+            .then(() => {
+                console.log('PullRequestStaked')
+            })
+            .catch((e) => {
+                console.log('Error Staking Pull Request: ', e)
+            })
+
+    })
+
+    program.addEventListener('PullRequestUnstaked', (res: IPullRequestUnstaked) => {
+        pullRequestUnstaked(res)
+            .then(() => {
+                console.log('PullRequestUnstaked')
+            })
+            .catch((e) => {
+                console.log('Error Unstaking Pull Request ', e)
             })
 
     })
