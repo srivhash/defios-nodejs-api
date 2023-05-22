@@ -2,54 +2,49 @@ import { PublicKey } from '@solana/web3.js'
 import { BN } from '@project-serum/anchor'
 
 export interface INameRouterCreated {
-    routerCreator: PublicKey
-    nameRouterAccount: PublicKey
+    router_creator: PublicKey
+    name_router_account: PublicKey
 }
 
 export interface IVerifiedUserAdded {
-    routerCreator: PublicKey
-    nameRouterAccount: PublicKey
-    verifiedUserAccount: PublicKey
-    userName: string
-    userPubkey: PublicKey
+    router_creator: PublicKey,
+    name_router_account: PublicKey,
+    verified_user_account: PublicKey,
+    user_name: String
 }
 
 export interface ICommitAdded {
-    commitCreator: PublicKey
-    commitAccount: PublicKey
-    issueAccount: PublicKey
-    metadataUri: string
+    commit_creator: PublicKey,
+    commit_account: PublicKey,
+    issue_account: PublicKey,
+    metadata_uri: String,
 }
 
 export interface IIssueCreated {
-    issueCreator: PublicKey
-    issueAccount: PublicKey
-    repositoryAccount: PublicKey
-    issueTokenPoolAccount: PublicKey
-    rewardsMint: PublicKey
-    uri: String
+    issue_creator: PublicKey,
+    issue_account: PublicKey,
+    repository_account: PublicKey,
+    issue_token_pool_account: PublicKey,
+    rewards_mint: PublicKey,
+    uri: String,
 }
 
 export interface IRepositoryCreated {
-    repositoryCreator: PublicKey
-    repositoryAccount: PublicKey
-    rewardsMint: PublicKey
-    uri: string
-    name: string
-    description: string
-    ghUsernames: string[]
-    claimAmounts: BN[]
-    tokenName: String
-    tokenSymbol: String
-    tokenUri: String
+    repository_creator: PublicKey,
+    repository_account: PublicKey,
+    rewards_mint: PublicKey,
+    uri: String,
+    name: String,
+    description: String,
 }
 
 export interface IIssueStaked {
-    issueStaker: PublicKey
-    issueStakerTokenAccount: PublicKey
-    issueAccount: PublicKey
-    stakedAmount: number
-    rewardsMint: PublicKey
+    issue_staker: PublicKey,
+    issue_staker_token_account: PublicKey,
+    issue_account: PublicKey,
+    staked_amount: number,
+    rewards_mint: PublicKey,
+    issue_contribution_link: String,
 }
 
 export interface ITokensClaimed {
@@ -58,20 +53,14 @@ export interface ITokensClaimed {
 }
 
 export interface IPullRequestSent {
-    pullSender: PublicKey
-    commits: PublicKey
-    metadataUri: string
+    sent_by: PublicKey,
+    commits: Array<PublicKey>,
+    metadata_uri: String,
 }
 
 export interface IAddCommitToPR {
-    commitCreator: PublicKey
-    commitAccount: PublicKey
-    issueAccount: PublicKey
-    metadataUri: string
-    // objective_start_unix: u64,
-    // objective_creation_unix: u64,
-    // objective_end_unix: u64,
-    // objective_deliverable: ObjectiveDeliverable,
+    commit: PublicKey,
+    by: PublicKey,
 }
 
 
@@ -80,27 +69,35 @@ export interface IAddChildObjective {
     added_by: PublicKey
 }
 
-export interface IAddObjectiveData {
+export interface IAddObjectiveDataEvent {
     objective_title: String,
-    metadataUri: String,
+    objective_metadata_uri: String,
+    objective_start_unix: number,
+    objective_creation_unix: number,
+
+    // look into these 2 fields
+
+    // objective_end_unix: Option<number>,
+    // objective_deliverable: ObjectiveDeliverable,
+    
     objective_public_key: PublicKey,
     objective_issue: PublicKey,
 }
 
-export interface IAddRoadmapData {
+export interface IAddRoadmapDataEvent {
     roadmap_title: String,
     roadmap_description_link: String,
+    roadmap_creation_unix: number,
     roadmap_creator: PublicKey,
-    issueAccount: PublicKey
 }
 
 
 export interface IIssueUnstaked {
-    issue_staker: PublicKey
-    issue_staker_token_account: PublicKey
-    issueAccount: PublicKey
-    unstaked_amount: number
-    rewards_mint: PublicKey
+    issue_staker: PublicKey,
+    issue_staker_token_account: PublicKey,
+    issueAccount: PublicKey,
+    unstaked_amount: number,
+    rewards_mint: PublicKey,
     issue_contribution_link: String
 }
 
@@ -120,3 +117,28 @@ export interface IVestingScheduleChanged {
     new_vesting_schedule: Array<String>,
 }
 
+
+export interface IDefaultVestingScheduleChanged {
+    number_of_schedules: number,
+    per_vesting_amount: number,
+    unix_change: number
+}
+
+export interface IPullRequestStaked {
+    pr_staker: PublicKey,
+    pr_staker_token_account: PublicKey,
+    pr_account: PublicKey,
+    staked_amount: number,
+    rewards_mint: PublicKey,
+    pr_contribution_link: String,
+
+}
+
+export interface IPullRequestUnstaked {
+    pr_staker: PublicKey,
+    pr_staker_token_account: PublicKey,
+    pr_account: PublicKey,
+    staked_amount: number,
+    rewards_mint: PublicKey,
+    pr_contribution_link: String,
+}
